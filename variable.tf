@@ -46,6 +46,7 @@ variable "key_name" {
   type        = string
 }
 
+
 ################# Web server security group ingress rule ###################################################################
 variable "inbound_rules_web" {
   type = list(object({

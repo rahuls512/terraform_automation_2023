@@ -11,16 +11,16 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "terraformstatefile-rsinfotech"
-    key            = "terraform-state-file-jun-04-07-23"
-    region         = "us-east-1"
+    bucket         = "terraform-statefile-rsinfotech"
+    key            = "terraform-statefile-jun-04-07-23"
+    region         = "ap-south-1"
     role_arn       = "arn:aws:iam::640111764884:role/stsassume-role"
-    dynamodb_table = "terraform-state-table-rsinfotech"
+    dynamodb_table = "terraform-statetable-rsinfotech"
 
   }
 }
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
   assume_role {
     role_arn     = "arn:aws:iam::640111764884:role/stsassume-role"
     session_name = "terraform-sts"
