@@ -10,7 +10,7 @@ resource "null_resource" "provisioner" {
     host        = aws_instance.bastion_host.public_ip
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("${path.module}/../Downloads/awskey01.pem")
+    private_key = var.awskey01
   }
 
   #Provisioner-local to Automate the public access by using the SSH key for bostion host    
@@ -20,9 +20,10 @@ resource "null_resource" "provisioner" {
  
   #Provisioner-file to Automate the file by using the file path for bostion host 
   provisioner "file" {
-    content     = file("${path.module}/../Downloads/awskey01.pem")
+      # source = "/../Downloads/awskey01.pem"
+    content     = var.mykey
     destination = "/home/ec2-user/awskey01"
-    # source = "/../Downloads/awskey5.pem"
+    on_failure  = continue
 
   }
 
