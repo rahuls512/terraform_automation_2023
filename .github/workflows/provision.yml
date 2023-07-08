@@ -3,13 +3,15 @@ name: Provision three tier architecture using terraform
 on:
   push:
     branches: [ "main" ]
-  pull_request:
 
   workflow_dispatch:
  
 jobs:
   provision-three-tier:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
 
     steps:
       - name: Checkout
