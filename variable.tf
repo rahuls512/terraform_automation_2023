@@ -37,15 +37,15 @@ variable "instance_types" {
   type        = string
 }
 
-variable "images" {
-  description = "images for the instance created as web server"
-  type        = string
-}
 variable "key_name" {
   description = "keypair for the instance created as web server"
   type        = string
 }
 
+# variable "images" {
+#   description = "images for the instance created as web server"
+#   type        = string
+# }
 
 ################# Web server security group ingress rule ###################################################################
 variable "inbound_rules_web" {

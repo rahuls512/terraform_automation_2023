@@ -1,0 +1,67 @@
+name: Provision three tier architecture using terraform
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+  workflow_dispatch:
+ 
+jobs:
+  provision-three-tier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: setup the Packer
+        id: setup
+        uses: hashicorp/setup-packer@main
+          
+      - name: initialize packer
+        id: initpacker
+        run: "packer init ./image-builder/"
+
+      - name: fmt packer
+        id: fmtpacker
+        run: "packer fmt ./image-builder/"
+          
+      - name: validate packer
+        id: validate
+        run: "packer validate ./image-builder/"
+
+      - name: build image
+        id: build
+        run: "packer build ./image-builder/"
+
+      - name: set up terraform
+        uses: hashicorp/setup-terraform@v2
+        id: setupterraform
+      
+      - name: terraform init
+        id: initailizeterraform
+        run: terraform init
+      
+      - name: format terraform
+        id: formatterraform
+        run: terraform fmt
+      
+      - name: terraform validate
+        id: validateterraform
+        run: terraform validate
+
+      - name: terraform plan
+        id: plan
+        run: terraform plan -input=false
+      
+      - name: terraform apply
+        id: apply
+        run: terraform apply --auto-approve
+  
+        
+         
+    
+    
+
+    
