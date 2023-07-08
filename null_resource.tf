@@ -21,7 +21,7 @@ resource "null_resource" "provisioner" {
   #Provisioner-file to Automate the file by using the file path for bostion host 
   provisioner "file" {
       # source = "/../Downloads/awskey01.pem"
-    content     = var.mykey
+    content     = var.awskey01
     destination = "/home/ec2-user/awskey01"
     on_failure  = continue
 
