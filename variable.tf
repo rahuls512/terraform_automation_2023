@@ -71,6 +71,8 @@ variable "bastion_instance_name" {
   description = "name for the instance created as bastion host server"
   type        = string
 }
-
+variable "awskey01" {
+  type = string
+}
 
 
