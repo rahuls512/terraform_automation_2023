@@ -44,7 +44,8 @@ jobs:
       
       - name: terraform init
         id: initailizeterraform
-        run: terraform init
+        run: terraform init -migrate-state
+      
       
       - name: format terraform
         id: formatterraform
