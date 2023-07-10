@@ -74,5 +74,20 @@ variable "bastion_instance_name" {
 variable "awskey01" {
   type = string
 }
+################# Application server security group ingress rule ###################################################################
+variable "inbound_rules_application" {
+  description = "ingress rule for security group of application server"
+  type = list(object({
+    port        = number
+    description = string
+    protocol    = string
+  }))
 
+  default = [
+    {
+      port        = 8080
+      description = "this is for app hosting"
+      protocol    = "tcp"
+  }]
+}
 
