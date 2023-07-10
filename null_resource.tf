@@ -17,10 +17,10 @@ resource "null_resource" "provisioner" {
   #   provisioner "local-exec" {  
   #   command = "scp -o StrictHostKeyChecking=no -i ~/../Downloads/awskey5.pem ~/../Downloads/awskey5.pem ec2-user@${self.public_ip}:~"  
   #  } 
- 
+
   #Provisioner-file to Automate the file by using the file path for bostion host 
   provisioner "file" {
-      # source = "/../Downloads/awskey01.pem"
+    # source = "/../Downloads/awskey01.pem"
     content     = var.awskey01
     destination = "/home/ec2-user/awskey01"
     on_failure  = continue
