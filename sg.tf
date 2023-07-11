@@ -51,7 +51,7 @@ resource "aws_security_group" "bastion_host" {
     Name = "bastion-host-sg-allow"
   }
 }
-############# Application Server Security group ####################################################################################
+############# Application Server Security Group ####################################################################################
 resource "aws_security_group" "application_server" {
   name   = "allow_application_traffic"
   vpc_id = aws_vpc.this.id
@@ -78,7 +78,7 @@ resource "aws_security_group" "application_server" {
     Name = "allow_app_server"
   }
 }
-############# Application Load Balancer ####################################################################################
+############# Application Load Balancer Security Group ####################################################################################
 resource "aws_security_group" "lb_sg" {
   name        = "allow_lb"
   description = "Allow access to load balancer from internet"
@@ -101,5 +101,30 @@ resource "aws_security_group" "lb_sg" {
 
   tags = {
     Name = "allow_alb_sg"
+  }
+}
+############# RDS Security Group ####################################################################################
+resource "aws_security_group" "db_sg" {
+  name        = "allow_db"
+  description = "Allow access to db from app server"
+  vpc_id      = aws_vpc.this.id
+
+  ingress {
+    description     = "Allow access to db from app server"
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.application_server.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_db_sg"
   }
 }
