@@ -1,51 +1,32 @@
+
 name: Provision three tier architecture using terraform
 
 on:
-  push:
-    branches: [ "main" ]
-
   workflow_dispatch:
- 
+#   push:
+#     branches: [main]
+
 jobs:
   provision-three-tier:
     runs-on: ubuntu-latest
     env:
+      TF_VAR_mykey: ${{ secrets.ssh_private_key }}
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
-      TF_VAR_awskey01: ${{ secrets.ssh_private_key }}
+      TF_VAR_db_user_name: ${{ secrets.db_user_name }}
+      TF_VAR_db_password: ${{ secrets.db_password }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: setup the Packer
-        id: setup
-        uses: hashicorp/setup-packer@main
-          
-      - name: initialize packer
-        id: initpacker
-        run: "packer init ./image-builder/"
-
-      - name: fmt packer
-        id: fmtpacker
-        run: "packer fmt ./image-builder/"
-          
-      - name: validate packer
-        id: validate
-        run: "packer validate ./image-builder/"
-
-      - name: build image
-        id: build
-        run: "packer build ./image-builder/"
-
+      
       - name: set up terraform
         uses: hashicorp/setup-terraform@v2
         id: setupterraform
       
       - name: terraform init
         id: initailizeterraform
-        run: terraform init -migrate-state
-      
+        run: terraform init -migrate-state 
       
       - name: format terraform
         id: formatterraform
@@ -62,10 +43,6 @@ jobs:
       - name: terraform apply
         id: apply
         run: terraform apply --auto-approve
-  
-        
-         
-    
-    
+      
 
-    
+

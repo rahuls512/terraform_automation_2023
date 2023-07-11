@@ -90,4 +90,15 @@ variable "inbound_rules_application" {
       protocol    = "tcp"
   }]
 }
+################# RDS Instance username and Password ###################################################################
+variable "db_user_name" {
+  description = "User name to connect with RDS"
+  type        = string
+  sensitive   = true
+}
 
+variable "db_password" {
+  description = "Password for db user"
+  type        = string
+  sensitive   = true
+}

@@ -1,6 +1,6 @@
 ############# Application Load Balancer ################################################################################################
 resource "aws_lb" "this" {
-  name               = "three-tier-alb"
+  name               = "rsinfotech-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
@@ -8,7 +8,7 @@ resource "aws_lb" "this" {
 }
 ############# Target group ALB ################################################################################################
 resource "aws_lb_target_group" "this" {
-  name     = "three-tier-tg"
+  name     = "rsinfotech-alb-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.this.id
