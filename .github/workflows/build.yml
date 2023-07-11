@@ -1,10 +1,10 @@
 on:
-    workflow_dispatch:
     push:
-      paths:
-        - .github/workflows/build.yml
-        - ../image-builder
+      # paths:
+      #   - .github/workflows/build.yml
+      #   - ../image-builder
       branches: [main]
+    workflow_dispatch:  
 jobs:
     provision-three-tier:
         runs-on: ubuntu-latest
