@@ -2,9 +2,9 @@
 name: Provision three tier architecture using terraform
 
 on:
-  workflow_dispatch:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   provision-three-tier:
