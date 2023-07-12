@@ -2,8 +2,8 @@
 name: Provision three tier architecture using terraform
 
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 jobs:

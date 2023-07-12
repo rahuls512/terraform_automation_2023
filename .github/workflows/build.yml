@@ -1,9 +1,9 @@
 on:
-    push:
+    # push:
       # paths:
       #   - .github/workflows/build.yml
       #   - ../image-builder
-      branches: [main]
+      # branches: [main]
     workflow_dispatch:  
 jobs:
     provision-three-tier:
