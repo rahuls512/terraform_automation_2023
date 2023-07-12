@@ -1,0 +1,15 @@
+on:
+    workflow_dispatch:
+
+jobs:
+    checks:
+        name: checks
+        runs-on: ubuntu-latest
+    
+        steps:
+
+        - name: checkout
+          uses: actions/checkout@master
+          with:
+            repository: rahuls512/java-app
+            token: ${{ secrets.my_pat }}
