@@ -1,4 +1,4 @@
-name: Package and Deploy
+name: Package and Deploy Public Repo.
 on:
     workflow_dispatch:
 
