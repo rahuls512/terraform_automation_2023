@@ -1,4 +1,4 @@
-name: Package and Deploy
+name: Dependency b/w Package and Deploy for Private Repo.
 
 on:
   workflow_dispatch:
@@ -9,13 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@master
+        with:
+            repository: rahuls512/java-app
+            token: ${{ secrets.my_pat }}
+     
         
       - name: Setup JDK 8
         uses: actions/setup-java@v2
         with:
-          java-version: 8
+            distribution: 'temurin'
+            java-version: '8'
         
       - name: Build Package
         run: mvn clean package
