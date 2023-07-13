@@ -1,3 +1,4 @@
+name: Package and Deploy Private Repo.
 on:
     workflow_dispatch:
 
