@@ -1,4 +1,4 @@
-name: Package and Deploy Private Repo.
+name: Package and Deploy using Private Repo.
 on:
     workflow_dispatch:
 

@@ -1,5 +1,5 @@
 
-name: Provision three tier architecture using terraform
+name: Provision three tier
 
 on:
   # push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  provision-three-tier:
+  provision-terraform:
     runs-on: ubuntu-latest
     env:
       TF_VAR_awskey01: ${{ secrets.ssh_private_key }}

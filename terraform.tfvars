@@ -5,3 +5,4 @@ instance_types        = "t2.micro"
 key_name              = "awskey01"
 bastion_instance_name = "bastion_host"
 images                = "ami-008b85aa3ff5c1b02"
+

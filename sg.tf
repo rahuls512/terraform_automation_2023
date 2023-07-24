@@ -7,11 +7,11 @@ resource "aws_security_group" "web" {
   dynamic "ingress" {
     for_each = var.inbound_rules_web
     content {
-      description = ingress.value.description
-      protocol    = ingress.value.protocol
-      from_port   = ingress.value.port
-      to_port     = ingress.value.port
-      cidr_blocks = [aws_vpc.this.cidr_block]
+      description     = ingress.value.description
+      protocol        = ingress.value.protocol
+      from_port       = ingress.value.port
+      to_port         = ingress.value.port
+      security_groups = ingress.value.port == 22 ? [aws_security_group.bastion_host.id] : [aws_security_group.lb_sg.id]
     }
   }
 
@@ -63,7 +63,8 @@ resource "aws_security_group" "application_server" {
       protocol        = ingress.value.protocol
       from_port       = ingress.value.port
       to_port         = ingress.value.port
-      security_groups = [aws_security_group.web.id]
+      security_groups = ingress.value.port == 22 ? [aws_security_group.bastion_host.id] : [aws_security_group.web.id, aws_security_group.lambda_function.id]
+
     }
   }
 
@@ -128,3 +129,29 @@ resource "aws_security_group" "db_sg" {
     Name = "allow_db_sg"
   }
 }
+############# Lambda Fuction Security group ################################################################################################
+resource "aws_security_group" "lambda_function" {
+  name        = "lambda-function-security-group"
+  description = "Security group for Lambda function"
+  vpc_id      = aws_vpc.this.id
+
+  ingress {
+    description = "Allow ssh to lambda_fuction from anywhere"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "lambda_fuction-sg-allow"
+  }
+}
+  
