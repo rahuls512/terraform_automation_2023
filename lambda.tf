@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "my_lambda_function" {
-  filename         = "lambda_function.zip"
+  filename         = "lambda_function"
   function_name    = "deploy_artifact"
   role             = "arn:aws:iam::640111764884:role/stsassume-role"
   handler          = "lambda_function.handler"
