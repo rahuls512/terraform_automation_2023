@@ -5,7 +5,7 @@ source "amazon-ebs" "this" {
     session_name = "packer-session"
   }
   region        = var.region
-  source_ami    = "ami-008b85aa3ff5c1b02"
+  source_ami    = data.amazon-ami.this.id
   instance_type = var.instance_type
   ssh_username  = var.ssh_user_name
   ami_name      = local.image_name
@@ -16,13 +16,19 @@ build {
     "source.amazon-ebs.this"
   ]
 
-  provisioner shell {
-    inline = [
-      "sudo yum update -y",
-      "sudo yum install httpd -y",
-      "sudo systemctl enable httpd",
-      "sudo systemctl start httpd",
-      "sudo echo '<h1>Welcome to rsinfotech.com</h1>'|sudo tee /var/www/html/index.html"
-    ]
-  }
+# Install and configure the web server on the EC2 instance
+provisioner "shell" {
+  inline = [
+    "sudo yum update -y",                            
+    "sudo yum install httpd -y",                   
+    "sudo systemctl enable httpd",                 
+    "sudo systemctl start httpd",                 
+    "sudo yum install unzip -y",                   
+    "sudo yum install wget -y",
+    "sudo wget -P /tmp https://www.free-css.com/assets/files/free-css-templates/download/page292/fables.zip", 
+    "sudo unzip -d /var/www/html/ /tmp/fables.zip",  
+    "sudo chown -R apache:apache /var/www/html/",    
+    "sudo systemctl restart httpd"                  
+  ]
+ }
 }

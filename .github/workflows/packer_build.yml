@@ -1,3 +1,5 @@
+name: Provision and build an ami
+
 on:
     # push:
       # paths:
@@ -6,7 +8,7 @@ on:
       # branches: [main]
     workflow_dispatch:  
 jobs:
-    provision-three-tier:
+    provision-packer:
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}

@@ -1,4 +1,4 @@
-name: Dependency b/w Package and Deploy for Private Repo.
+name: Package and Deploy using Private Repo.
 
 on:
   workflow_dispatch:
@@ -12,7 +12,8 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
         with:
-            repository: rahuls512/java-app
+            repository: rahuls512/java-healthapp
+
             token: ${{ secrets.my_pat }}
      
         
@@ -26,7 +27,7 @@ jobs:
         run: mvn clean package
         
       - name: Create Directory
-        run: mkdir package && cp target/*.war package
+        run: mkdir package && cp target/*.war package/app-login-page.war
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
