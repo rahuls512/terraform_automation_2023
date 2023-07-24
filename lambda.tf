@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "my_lambda_function" {
-  filename         = "lambda_function"
+  filename         = "./lambda_function.zip"
   function_name    = "deploy_artifact"
   role             = "arn:aws:iam::640111764884:role/stsassume-role"
   handler          = "lambda_function.handler"
@@ -11,6 +11,7 @@ resource "aws_lambda_function" "my_lambda_function" {
     security_group_ids = [aws_security_group.lambda_function.id]
   }
 }
+
 resource "aws_s3_bucket" "my_s3_bucket" {
   bucket = "rsinfotech-application-artifactstore"  # Replace with your desired S3 bucket name
 }
