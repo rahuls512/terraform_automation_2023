@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "my_lambda_function" {
-  filename         = "./lambda_function.zip"
+  filename         = "C:/Users/Rahul Sharan/terraform_automation_2023/lambda_function.zip"
   function_name    = "deploy_artifact"
   role             = "arn:aws:iam::640111764884:role/stsassume-role"
   handler          = "lambda_function.handler"
