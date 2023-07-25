@@ -1,5 +1,11 @@
+data "archive_file" "zip_the_python_code" {
+ type        = "zip"
+ source_dir  = "${path.module}/python/"
+ output_path = "${path.module}/python/lambda_function.zip"
+}
+
 resource "aws_lambda_function" "my_lambda_function" {
-  filename      = "${path.module}/terraform_automation_2023/lambda_function.zip"
+  filename      = "${path.module}/python/lambda_function.zip"
   function_name = "deploy_artifact"
   role          = "arn:aws:iam::640111764884:role/stsassume-role"
   handler       = "lambda_function.handler"
