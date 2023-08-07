@@ -1,4 +1,4 @@
-name: Provision and build an ami
+name: Packer Provision for build an ami
 
 on:
     # push:

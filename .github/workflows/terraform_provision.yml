@@ -1,5 +1,5 @@
 
-name: Provision three tier
+name: Terraform Provision 
 
 on:
   # push:
