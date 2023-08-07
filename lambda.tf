@@ -1,11 +1,5 @@
-data "archive_file" "zip_the_python_code" {
- type        = "zip"
- source_dir  = "${path.module}/python/"
- output_path = "${path.module}/python/lambda_function.zip"
-}
-
-resource "aws_lambda_function" "my_lambda_function" {
-  filename      = "${path.module}/python/lambda_function.zip"
+resource "aws_lambda_function" "zip_the_python_code_lambda" {
+  filename      = "${path.module}/lambda_function.zip"
   function_name = "deploy_artifact"
   role          = "arn:aws:iam::640111764884:role/stsassume-role"
   handler       = "lambda_function.handler"
@@ -18,6 +12,12 @@ resource "aws_lambda_function" "my_lambda_function" {
   }
 }
 
+data "archive_file" "lambda_function_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}"
+  output_path = "${path.module}/lambda_function.zip"
+}
+
 resource "aws_s3_bucket" "my_s3_bucket" {
   bucket = "rsinfotech-application-artifactstore" # Replace with your desired S3 bucket name
 }
@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "my_s3_bucket" {
 resource "aws_lambda_permission" "s3_trigger_permission" {
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.my_lambda_function.arn
+  function_name = aws_lambda_function.zip_the_python_code_lambda.arn
   principal     = "s3.amazonaws.com"
 
   source_arn = aws_s3_bucket.my_s3_bucket.arn
@@ -35,7 +35,7 @@ resource "aws_s3_bucket_notification" "my_s3_bucket_notification" {
   bucket = aws_s3_bucket.my_s3_bucket.id
 
   lambda_function {
-    lambda_function_arn = aws_lambda_function.my_lambda_function.arn
+    lambda_function_arn = aws_lambda_function.zip_the_python_code_lambda.arn
     events              = ["s3:ObjectCreated:*"]
     filter_suffix       = ".war" # Replace with the desired file extension triggering the Lambda function
   }
