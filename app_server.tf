@@ -1,3 +1,4 @@
+############ Application Server with Auto Scaling Group ###########################################################
 module "asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "6.10.0"
@@ -34,6 +35,7 @@ module "asg" {
   ebs_optimized     = true
   enable_monitoring = true
   security_groups   = [aws_security_group.application_server.id]
+  user_data         = file("${path.module}/user_data.sh")
 
   block_device_mappings = [
     {
