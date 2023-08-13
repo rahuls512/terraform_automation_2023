@@ -7,13 +7,15 @@ resource "aws_db_instance" "default" {
   instance_class         = "db.t3.micro"
   username               = var.db_user_name
   password               = var.db_password
+  multi_az               = true  # Enables Multi-AZ deployment for high availability
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.db_sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.this.id
+  db_subnet_group_name   = aws_db_subnet_group.this.name  # Use the name of the subnet group, not the ID
 }
+
 ############# RDS Instance Subnet Group ################################################################################################
 resource "aws_db_subnet_group" "this" {
-  name       = "threetierdb_subnet_group"
+  name       = "threetierdb-subnet-group"
   subnet_ids = [for each_subnet in aws_subnet.private_subnet : each_subnet.id]
 
   tags = {

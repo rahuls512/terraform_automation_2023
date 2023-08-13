@@ -1,5 +1,6 @@
 import boto3
 import paramiko
+import json
 import os
 
 def lambda_handler(event, context):
@@ -7,6 +8,15 @@ def lambda_handler(event, context):
     s3_key=event['Records'][0]['s3']['object']['key']
     print(s3_bucket_name)
     print(s3_key)
+
+    #Send a notification via SNS
+    sns_client = boto3.client('sns')
+    topic_arn = 'arn:aws:sns:us-east-1:640111764884:s3-lambda-sns'
+    sns_client.publish(
+       TopicArn=topic_arn,
+       Subject='S3 Object Created',
+       Message=f"File '{s3_key}' was uploaded to bucket '{s3_bucket_name}'"
+    )
 
     
     # connect to s3
@@ -35,7 +45,7 @@ def lambda_handler(event, context):
     
     print(private_ip_address)
     
-    s3_client.download_file("keybucketforlambda123455", "awskey01", "/tmp/file.pem")
+    s3_client.download_file("key-bucket-for-lambda", "awskey01", "/tmp/file.pem")
     
     os.system("cat /tmp/file.pem")
     

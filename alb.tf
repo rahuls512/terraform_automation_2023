@@ -35,10 +35,10 @@ resource "aws_lb_listener" "this" {
 
 ############# Internal facing Application Load Balancer ######################################################################
 resource "aws_lb" "i_alb" {
-  name               = "rsinfotech-internalFacing-alb" 
+  name               = "rsinfotech-internalFacing-alb"
   internal           = true
   load_balancer_type = "application"
-  security_groups   = [aws_security_group.web.id, aws_security_group.application_server.id]
+  security_groups    = [aws_security_group.web.id, aws_security_group.application_server.id]
   subnets            = [for each_subnet in aws_subnet.private_subnet : each_subnet.id]
 }
 
