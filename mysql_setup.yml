@@ -1,0 +1,40 @@
+---
+- name: Install and Configure MySQL
+  hosts: all
+  gather_facts: true
+  become: yes
+
+  tasks:
+    - name: Import MySQL GPG key
+      rpm_key:
+        key: https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+      become: yes
+
+    - name: Download MySQL repository RPM
+      get_url:
+        url: http://dev.mysql.com/get/mysql57-community-release-e17-8.noarch.rpm
+        dest: /tmp/mysql57-community-release-e17-8.noarch.rpm
+      become: yes
+
+    - name: Install MySQL repository RPM
+      yum:
+        name: /tmp/mysql57-community-release-e17-8.noarch.rpm
+        state: present
+      become: yes
+
+    - name: Install MySQL Community Server
+      yum:
+        name: mysql-community-server
+        state: present
+      become: yes
+
+    - name: Start MySQL service
+      systemd:
+        name: mysqld
+        state: started
+        enabled: yes
+      become: yes
+
+    - name: Print completion message
+      debug:
+        msg: "MySQL installation and setup completed."

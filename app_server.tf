@@ -34,8 +34,8 @@ module "asg" {
   key_name          = var.key_name
   ebs_optimized     = true
   enable_monitoring = true
-  security_groups   = [aws_security_group.application_server.id]
-  user_data         = file("${path.module}/user_data.sh")
+  security_groups   = [aws_security_group.application_server.id,aws_security_group.bastion_host.id]
+  # user_data         = file("${path.module}/user_data.sh")
 
   block_device_mappings = [
     {
