@@ -1,0 +1,47 @@
+---
+- name: Install Ansible and Configure Environment
+  hosts: all
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Update system packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install Python 3
+      yum:
+        name: python3
+        state: present
+
+    - name: Install Python 3 dependencies
+      yum:
+        name: python3-pip python3-devel
+        state: present
+
+    - name: Show pip3 version
+      command: pip3 --version
+
+    - name: Show Python version
+      command: python -V
+
+    - name: Install Ansible
+      pip:
+        name: ansible
+        state: present
+
+    - name: Show Ansible version
+      command: ansible --version
+
+    - name: Create Ansible directory
+      file:
+        path: /home/ec2-user/ansible
+        state: directory
+        mode: '0755'
+
+    - name: Create hosts file
+      file:
+        path: /home/ec2-user/ansible/hosts
+        state: touch
+
+

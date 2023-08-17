@@ -1,0 +1,6 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-south-1
+filters:
+  # All instances with their `Environment` tag set to `dev`
+  tag:Environment: dev

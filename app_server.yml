@@ -1,0 +1,57 @@
+---
+- name: Install and configure tomcat on amazon linux
+  hosts: all
+  gather_facts: true
+  become: yes
+  vars:
+    java_version: 1.8*
+    tomcat_version: 9.0.78
+    admin_password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
+    deployer_password: "deployer"
+    tomcat_password: "s3cret"
+
+  tasks:
+    - name: install java
+      ansible.builtin.yum:
+        name: java-{{ java_version }}
+        state: present
+
+    - name: Download tomcat
+      ansible.builtin.get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz
+        dest: /tmp/tomcat.zip
+
+    - name: Unzip tomcat
+      ansible.builtin.unarchive:
+        src: /tmp/tomcat.zip
+        dest: /opt/
+        remote_src: true
+    
+    - name: set tomcat permissions
+      ansible.builtin.file:
+        path: /opt/apache-tomcat-{{ tomcat_version }}
+        owner: ec2-user
+        group: ec2-user
+        mode: 0755
+        state: directory
+        recurse: true
+    
+
+    - name: configue tomact user xml file
+      ansible.builtin.template:
+        src: tomcat-users.xml.j2
+        dest: /opt/apache-tomcat-{{ tomcat_version }}/conf/tomcat-users.xml
+    
+    - name: comment valve tag sections in context.xml file
+      ansible.builtin.replace:
+        path: /opt/apache-tomcat-{{ tomcat_version }}/webapps/{{ item }}/META-INF/context.xml
+        regexp: '  <Valve className="org.apache.catalina.valves.RemoteAddrValve"'
+        replace: '<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve".*?/> -->'
+      loop:
+        - docs
+        - examples
+        - host-manager
+        - manager
+      
+    - name: start tomcat
+      ansible.builtin.shell: nohup  /opt/apache-tomcat-{{ tomcat_version }}/bin/startup.sh &

@@ -1,0 +1,32 @@
+name: Ansible Installation
+
+on:
+    workflow_dispatch:
+jobs:
+  ansible_installation:
+    runs-on: ubuntu-latest
+    env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install Ansible dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install python3
+        sudo apt-get -y install python3-pip python3-dev
+        sudo pip3 install ansible
+
+    - name: Run Ansible playbook
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: "False"
+      run: |
+        ansible-playbook -i aws_ec2.yml ansible_installation.yml -vvv

@@ -24,17 +24,22 @@ resource "aws_s3_bucket_notification" "my_s3_bucket_notification" {
   }
 }
 # Create a Lambda function
-resource "aws_lambda_function" "example_lambda" {
+data "archive_file" "lambda-function" {
+  type        = "zip"
+  source_file = "lambda-function.py"
+  output_path = "lambda_function_payload.zip"
+}
+resource "aws_lambda_function" "test_lambda" {
   function_name = "lambda-function"
- role          = "arn:aws:iam::640111764884:role/stsassume-role"
+  role          = "arn:aws:iam::640111764884:role/stsassume-role"
   handler       = "lambda-function/lambda-function.lambda_handler"
   runtime       = "python3.10"
   memory_size   = 128
   timeout       = 30
 
-  filename = "lambda-function.zip" # Make sure the ZIP file is in the same directory as your Terraform configuration
+  filename = "lambda_function_payload.zip" # Make sure the ZIP file is in the same directory as your Terraform configuration
 
-  source_code_hash = filebase64sha256("lambda-function.zip")
+  source_code_hash = data.archive_file.lambda-function.output_base64sha256
 
     vpc_config {
     subnet_ids         = [for each_subnet in aws_subnet.private_subnet : each_subnet.id]
